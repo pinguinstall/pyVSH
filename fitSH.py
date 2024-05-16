@@ -14,9 +14,9 @@ import getVFieldStats
 from computeCorrelations import computeCorrelations
 from getRotation import getRotation
 from getGlide import getGlide
-from computeVectorP import computeVectorP
+from computeVectorP import computePl_SH
 import progressBar
-from computeVectorW import computeVectorW, computeVectorWOver, computeVectorWTilde
+from computeVectorW import computeVectorW_SH, computeVectorWOver_SH, computeVectorWTilde_SH
 import sys
 
 
@@ -116,20 +116,9 @@ def fitSH(data: np.array, lmax: int, debug=False, store_all=False) -> tuple:
     res['uwe'] = np.sqrt(s02)
     res['sigmas'] = sigmas
 
-    if debug:
-        print("   rotation & glide, Ps & Ws", file=sys.stderr, flush=True)
-
-    # rotation
-    res['rot'] = getRotation(res)
-
-    # glide
-    if lmax > 0:
-        res['glide'] = getGlide(res)
-    else:
-        res['glide'] = 'lmax == 0'
 
     # RMS and Powers
-    Pl = computeVectorPl_SH(lmax, c)
+    Pl = computePl_SH(lmax, c)
     res['Pl'] = Pl.copy()
 
     res['RMSSH'] = np.sqrt(Pl / (4 * np.pi))

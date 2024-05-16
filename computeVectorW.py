@@ -65,17 +65,17 @@ def computeVectorW_SH(lmax: int, shCoeffs: np.array, shSigmas: np.array) -> np.a
     """
     i = 0
     nul = 0
-    Wl = np.zeros(lmax)
+    Wl = np.zeros(lmax+1)
     for l in range(0, lmax + 1):
         for m in range(0, l + 1):
             if m == 0:
                 nul = i
-                Wl[l] += (vshCoeffs[i] / vshSigmas[nul]) ** 2
+                Wl[l] += (shCoeffs[i] / shSigmas[nul]) ** 2
                 i += 1
             else:
-                Wl[l] += (vshCoeffs[i] ** 2) / ((vshSigmas[nul] ** 2) / 2)
+                Wl[l] += (shCoeffs[i] ** 2) / ((shSigmas[nul] ** 2) / 2)
                 i += 1
-                Wl[l] += (vshCoeffs[i] ** 2) / ((vshSigmas[nul] ** 2) / 2)
+                Wl[l] += (shCoeffs[i] ** 2) / ((shSigmas[nul] ** 2) / 2)
                 i += 1
     return Wl
 
@@ -117,20 +117,20 @@ def computeVectorWOver_SH(lmax: int, shCoeffs: np.array, shSigmas: np.array) -> 
     :param vshSigmas: corresponding (formal) standard errors
     :return: vector WOverline_1, WOverline_2, ..., WOverline_lmax of normalized powers
     """
-    sAvg = np.zeros(lmax)
+    sAvg = np.zeros(lmax+1)
     i = 0
     for l in range(0, lmax + 1):
         for m in range(0, l + 1):
             if m == 0:
-                sAvg[l] += vshSigmas[i] ** 2
+                sAvg[l] += shSigmas[i] ** 2
                 i += 1
             else:
-                sAvg[l] += 2 * (vshSigmas[i] ** 2)
+                sAvg[l] += 2 * (shSigmas[i] ** 2)
                 i += 1
-                sAvg[l] += 2 * (vshSigmas[i] ** 2)
+                sAvg[l] += 2 * (shSigmas[i] ** 2)
                 i += 1
 
-    pl = Pl.computeVectorP(lmax, vshCoeffs)
+    pl = Pl.computePl_SH(lmax, shCoeffs)
     return np.array([pl[l] / (sAvg[l] / (2 * l + 1)) for l in range(0, lmax + 1)])
 
 
@@ -169,17 +169,17 @@ def computeVectorWTilde_SH(lmax: int, shCoeffs: np.array, shSigmas: np.array) ->
     :param vshSigmas: corresponding (formal) standard errors
     :return: vector WTilde_1, WTilde_2, ..., WTilde_lmax of normalized powers
     """
-    Wtilde = np.zeros(lmax)
+    Wtilde = np.zeros(lmax+1)
     i = 0
     for l in range(0, lmax + 1):
         for m in range(0, l + 1):
             if m == 0:
-                Wtilde[l] += (vshCoeffs[i] / vshSigmas[i]) ** 2
+                Wtilde[l] += (shCoeffs[i] / shSigmas[i]) ** 2
                 i += 1
             else:
-                Wtilde[l] += (vshCoeffs[i] / vshSigmas[i]) ** 2
+                Wtilde[l] += (shCoeffs[i] / shSigmas[i]) ** 2
                 i += 1
-                Wtilde[l] += (vshCoeffs[i] / vshSigmas[i]) ** 2
+                Wtilde[l] += (shCoeffs[i] / shSigmas[i]) ** 2
                 i += 1
                 
     return Wtilde

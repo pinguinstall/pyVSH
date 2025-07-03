@@ -132,7 +132,7 @@ def computeF(alpha, delta, lmax):
     for l in range(0, lmax+1):
         F[i] = alp[l,0]*P[l,0]
         i = i+1
-        for m in range(1,l+1):
+        for m in range(1, l+1):
             F[i] = 2 * alp[l,m] * P[l,m] * cosSin[0][m]
             i = i+1
             F[i] = -2 * alp[l,m] * P[l,m] * cosSin[1][m]

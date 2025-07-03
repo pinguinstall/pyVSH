@@ -15,17 +15,8 @@ from computeCorrelations import computeCorrelations
 from getRotation import getRotation
 from getGlide import getGlide
 from computeVectorP import computePl_SH
-import progressBar
 from computeVectorW import computeVectorW_SH, computeVectorWOver_SH, computeVectorWTilde_SH
 import sys
-
-
-# col 0 = alphas
-# col 1 = deltas
-# col 2 = signal in e alpha
-# col 3 = sigma in e alpha
-# col 4 = signal in e delta
-# col 5 = sigma in e delta
 
 
 def fitSH(data: np.array, lmax: int, debug=False, store_all=False) -> tuple:
@@ -47,26 +38,19 @@ def fitSH(data: np.array, lmax: int, debug=False, store_all=False) -> tuple:
     if debug:
         print("   setup & get coefficients", file=sys.stderr, flush=True)
     M = data.shape[0]
-    #res = {'datapoints': M, 'pwrVField': getVFieldStats.getPowerOfVectorField(data[:, [2, 4]])}
+    
     res = {'datapoints': M, 'pwrVField': (4 * np.pi/data.shape[0]) * np.sum(np.array(data[:,2])**2)}
     num_coeffs = (lmax + 1)**2
     res['lmax'] = lmax
 
-    A = np.zeros((M, num_coeffs))
-    b = np.zeros(M)
-    W = np.zeros(M)
-
+    # b is 3rd column of input array (signal)
     b = data[:,2]
 
     # W stays 1/sigma here, because below we compute AW^T * AW and the get the power automatically
     W = (1 / np.array(data[:, 3]))
-
-    pb = progressBar.progressBar(1, M, 60)
-    for i in range(0, M):
-        alpha = data[i, 0]
-        delta = data[i, 1]
-        A[i, :] = legP.computeF(alpha, delta, lmax)
-        pb.getProgressIncrement()
+    
+    # design matrix is just row wise the function computeF for all points on the sky using lmax
+    A = np.array([legP.computeF(alpha, delta, lmax) for alpha, delta in zip(data[i, 0], data[i, 1])])
 
     # [:, np.newaxis] because we want to multiply every row of A with the specific value in W
     AW = A * W[:, np.newaxis]

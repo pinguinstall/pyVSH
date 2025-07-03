@@ -82,9 +82,6 @@ def getAB(x: float, lmax: int) -> (np.array, np.array):
     A = np.zeros(getOutputArraySize(lmax))
     B = np.zeros(getOutputArraySize(lmax))
 
-    #    for l in range(1, lmax + 1):
-    #        B[lm2idx(l, 0)] = 0.0
-
     B[lm2idx(1, 1)] = 1.0
     for m in range(1, lmax):
         B[lm2idx(m + 1, m + 1)] = ((2. * m + 1.) * (m + 1.) / m) * sx * B[lm2idx(m, m)]

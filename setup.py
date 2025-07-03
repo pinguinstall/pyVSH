@@ -1,9 +1,9 @@
 from setuptools import setup
 from Cython.Build import cythonize
 import os
-os.environ['CC'] = 'clang-15'
+os.environ['CC'] = 'clang'
 os.environ['CFLAGS'] = '-O3 -march=native'
-os.environ['LDSHARED'] = 'clang-15 -shared'
+os.environ['LDSHARED'] = 'clang -shared'
 
 
 setup(

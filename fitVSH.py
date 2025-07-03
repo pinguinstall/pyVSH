@@ -14,17 +14,8 @@ from computeCorrelations import computeCorrelations
 from getRotation import getRotation
 from getGlide import getGlide
 from computeVectorP import computeVectorP
-import progressBar
 from computeVectorW import computeVectorW, computeVectorWOver, computeVectorWTilde
 import sys
-
-
-# col 0 = alphas
-# col 1 = deltas
-# col 2 = signal in e alpha
-# col 3 = sigma in e alpha
-# col 4 = signal in e delta
-# col 5 = sigma in e delta
 
 
 def fitVSH(data: np.array, lmax: int, debug=False, store_all=False) -> tuple:
@@ -53,25 +44,15 @@ def fitVSH(data: np.array, lmax: int, debug=False, store_all=False) -> tuple:
     num_coeffs_half = int(num_coeffs / 2)
     res['lmax'] = lmax
 
-    A = np.zeros((2 * M, num_coeffs))
-    b = np.zeros(2 * M)
-    W = np.zeros(2 * M)
-
-    b[:M] = data[:, 2]
-    b[M:] = data[:, 4]
+    # data columns, first all alpha, second all delta
+    b = np.concatenate([data[:, 2], data[:, 4]])
 
     # W stays 1/sigma here, because below we compute AW^T * AW and the get the power automatically
-    W[:M] = (1 / np.array(data[:, 3]))
-    W[M:] = (1 / np.array(data[:, 5]))
+    W = np.concatenate([1 / np.array(data[:, 3]), 1 / np.array(data[:, 5])])
 
-    pb = progressBar.progressBar(1, M, 60)
-    for i in range(0, M):
-        alpha = data[i, 0]
-        delta = data[i, 1]
-        v = vshd.getVSHVectors(alpha, delta, lmax)
-        A[i, :] = v[:, 0]
-        A[i + M, :] = v[:, 1]
-        pb.getProgressIncrement()
+    # design matrix
+    A = np.array([vshd.getVSHVectors(data[i, 0], data[i, 1], lmax) for i in range(0, M)])
+    A = np.concatenate((A[:, :, 0], A[:, :, 1]), axis=0)
 
     # [:, np.newaxis] because we want to multiply every row of A with the specific value in W
     AW = A * W[:, np.newaxis]

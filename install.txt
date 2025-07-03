@@ -1,1 +1,7 @@
-python3 setup.py build_ext --inplace
+If you want to build a Cython package you can edit 
+setup.py to your needs and run:
+
+#> python3 setup.py build_ext --inplace
+
+Otherwise, you can use the python files as they are
+with slightly lower performance.

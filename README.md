@@ -12,7 +12,7 @@ We also included functionality to compute weighted and un-weighted powers from t
 
 ## installation
 You can read `install.txt` for instructions to build a Cython version of this library.
-We begun to us numba ([https://numba.pydata.org/]) for some routines, it should be transparent for users who do not have numba installed.
+We begun to use numba ([https://numba.pydata.org/]) for some routines, it should be transparent for users who do not have numba installed.
 
 
 ## usage
@@ -56,5 +56,5 @@ The result is a dictionary with the usual statistics and fit parameters.
 ## todo
 There are some things which can be improved, besides more elegant (pythonic) code style:
 - Currently the bias in the powers, are not implemented. This was described in the last half of Section 3.4. (Systematic errors) in Gaia Collaboration: S. A. Klioner, L. Lindegren, F. Mignard et al. "Gaia Early Data Release 3: The celestial reference frame (Gaia-CRF3)" and proven in Appendix A of Gaia Collaboration: S. A. Klioner, F. Mignard, L. Lindegren et al. "Gaia Early Data Release 3: Acceleration of the Solar System from Gaia astrometry"
-- Particularly in the LegendreP module, there are a lot of for-loops, that should be written in a more elegant way
+- Particularly in the `LegendreP` module, there are a lot of for-loops, that should be written in a more elegant way
 

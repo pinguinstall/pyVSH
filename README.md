@@ -10,6 +10,11 @@ issues for higher orders (l).
 
 We also included functionality to compute weighted and un-weighted powers from the fitted coefficients, rotation and glide, and some other parameters.
 
+## installation
+You can read `install.txt` for instructions to build a Cython version of this library.
+We begun to us numba ([https://numba.pydata.org/]) for some routines, it should be transparent for users who do not have numba installed.
+
+
 ## usage
 In the simplest case you have some tabular data, with rows wise (for fitting SH):
 > `right ascension [rad]; declination [rad]; signal; uncertainty of signal` ,

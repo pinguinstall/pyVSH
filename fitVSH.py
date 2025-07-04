@@ -36,6 +36,7 @@ def fitVSH(data: np.array, lmax: int, debug=False, store_all=False) -> tuple:
     can make output very large
     :return: dict with all results
     """
+    
     if debug:
         print("   setup & get coefficients", file=sys.stderr, flush=True)
     M = data.shape[0]
@@ -116,8 +117,17 @@ def fitVSH(data: np.array, lmax: int, debug=False, store_all=False) -> tuple:
     # RMS and Powers
     PlT = computeVectorP(lmax, c[:num_coeffs_half])
     PlS = computeVectorP(lmax, c[num_coeffs_half:])
+    NlT = computeVectorP(lmax, sigmas[:num_coeffs_half]) / ( 2 * np.array(range(1, lmax+1)) + 1)
+    NlS = computeVectorP(lmax, sigmas[num_coeffs_half:]) / ( 2 * np.array(range(1, lmax+1)) + 1)
+    
     res['PlT'] = PlT.copy()
     res['PlS'] = PlS.copy()
+    
+    res['ClT'] = PlT / ( 2 * np.array(range(1, lmax+1)) + 1)
+    res['ClS'] = PlS / ( 2 * np.array(range(1, lmax+1)) + 1)
+    
+    res['ChatlT'] = res['ClT'] - NlT
+    res['ChatlS'] = res['ClS'] - NlS
 
     RMSAll = np.sqrt((PlT + PlS) / (4 * np.pi))
     PlT = np.sqrt(PlT / (4 * np.pi))

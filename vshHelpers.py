@@ -5,7 +5,7 @@ def getLmaxFromNumCo(nc):
     return int(-1 + np.sqrt(1+nc/2))
 
 
-def getNumCoefficients(maxl: int) -> int:
+def getNumCoefficients(maxl):
     return 2 * (maxl * (maxl + 2))
 
 

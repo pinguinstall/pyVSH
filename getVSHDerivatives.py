@@ -2,12 +2,14 @@ from getLegendreP import getAB, getBetas, getCosSinMap, lm2idx
 import numpy as np
 from vshHelpers import getNumCoefficients
 
-def getGlmFlm(maxl: int, a: float, d: float) -> (np.array, np.array):
+def getGlmFlm(maxl, a, d):
     """returns the line of gradients for a specific position on the sky"""
-    flm = np.zeros(int(getNumCoefficients(maxl) / 2))
-    glm = np.zeros(int(getNumCoefficients(maxl) / 2))
+    flm = [0.0 for i in range(0, getNumCoefficients(maxl) // 2)]
+    glm = [0.0 for i in range(0, getNumCoefficients(maxl) // 2)]
 
-    A, B = getAB(np.sin(d), maxl)
+    AB = getAB(np.sin(d), maxl)
+    A = AB[0]
+    B = AB[1]
     betas = getBetas(maxl)
     cosmap, sinmap = getCosSinMap(a, maxl)
 
@@ -37,6 +39,9 @@ def getVecAlpha(F, G):
 
 def getVSHVectors(alpha, delta, lmax):
     G, F = getGlmFlm(lmax, alpha, delta)
+    G = np.array(G)
+    F = np.array(F)
+    
     P = np.array([F, G]).flatten()
     Q = np.array([-G, F]).flatten()
     # P = for e alpha

@@ -1,13 +1,20 @@
 import getVSHDerivatives as vshd
-#from celestCoordinates import getUHValpha, getUHVdelta, vec2ad
-from vshHelpers import getLmaxFromNumCo, getUHValpha, getUHVdelta, vec2ad
+from celestCoordinates import getUHValpha, getUHVdelta, vec2ad
+from vshHelpers import getLmaxFromNumCo
 import healpy as hp
 import numpy as np
 import matplotlib.pyplot as plt
 
 def getVSHFieldForPos(vshcofs, alpha, delta):
+    """
+    returns the local vector field components according to the VSH coefficients
+    :param vshcofs: vector of VSH coefficients
+    :param alpha: RA
+    :param delta: DEC
+    :return: vector field components as [sigAlphaStar, sigDelta, sigVecX, sigVecY, sigVecZ]
+    """
     numCoeffs = np.array(vshcofs).shape[0]
-    numCoeffsHalf = int(numCoeffs / 2)
+    numCoeffsHalf = numCoeffs // 2
 
     lmax = getLmaxFromNumCo(numCoeffs)
     v = vshd.getVSHVectors(alpha, delta, lmax)
@@ -20,6 +27,7 @@ def getVSHFieldForPos(vshcofs, alpha, delta):
     sigVec = sigAlphaStar * uvalpha + sigDelta * uvdelta
 
     return [sigAlphaStar, sigDelta, sigVec[0], sigVec[1], sigVec[2]]
+
 
 
 def plotAlphaDeltaForCoffSet(cofs, nside=16,

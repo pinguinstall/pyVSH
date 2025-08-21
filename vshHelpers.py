@@ -27,3 +27,30 @@ def setAllExceptLToZero(vshcofs, l):
     cofsnew[slocs] = 0.0
 
     return np.array(vshcofs) - cofsnew
+
+
+def lmReIm2idx(l, m, ri="re"):
+    """
+    Gives the flat index of VSH coefficients in the usual order 10R, 11R, 11I, 20R, 21R, 21I, 22R, 22I, ...
+    :param l: l
+    :param m: m
+    :param ri: Real or Imaginary part
+    :return: flat index, None if invalid combination (e.g. m>l)
+    """
+    if (m == 0) and (ri == "im"):
+        return None
+    if m > l:
+        return None
+    offset = ((l-1) * ((l-1) + 2))
+
+    if m == 0:
+        return offset
+    
+    if ri == "im":
+        i = 0
+    elif ri == "re":
+        i = 1
+    else:
+        return None
+    
+    return offset + 2*m - i

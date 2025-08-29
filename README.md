@@ -12,7 +12,7 @@ We also included functionality to compute weighted and un-weighted powers from t
 
 ## installation
 ```
-pip install git+<LINK_TO_GITLAB_REPO>
+pip install git+https://gitlab.mn.tu-dresden.de/gaia/pyvsh
 ```
 
 You can read `install.txt` for instructions to build a Cython version of this library.

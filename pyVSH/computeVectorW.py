@@ -21,7 +21,7 @@ The code is not optimized for performance at this time.
 """
 
 import numpy as np
-import computeVectorP as Pl
+import pyVSH.computeVectorP as Pl
 
 
 def computeVectorW(lmax: int, vshCoeffs: np.array, vshSigmas: np.array) -> np.array:

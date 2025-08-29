@@ -7,15 +7,15 @@
 # You should have received a copy of the GNU General Public License along with pyMathHelpers. If not, see
 # <https://www.gnu.org/licenses/>.
 
-import getVSHDerivatives as vshd
-import getLegendreP as legP
+import pyVSH.getVSHDerivatives as vshd
+import pyVSH.getLegendreP as legP
 import numpy as np
-import getVFieldStats
-from computeCorrelations import computeCorrelations
-from getRotation import getRotation
-from getGlide import getGlide
-from computeVectorP import computePl_SH
-from computeVectorW import computeVectorW_SH, computeVectorWOver_SH, computeVectorWTilde_SH
+import pyVSH.getVFieldStats
+from pyVSH.computeCorrelations import computeCorrelations
+from pyVSH.getRotation import getRotation
+from pyVSH.getGlide import getGlide
+from pyVSH.computeVectorP import computePl_SH
+from pyVSH.computeVectorW import computeVectorW_SH, computeVectorWOver_SH, computeVectorWTilde_SH
 import sys
 
 

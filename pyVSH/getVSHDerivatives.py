@@ -1,6 +1,6 @@
-from getLegendreP import getAB, getBetas, getCosSinMap, lm2idx
+from pyVSH.getLegendreP import getAB, getBetas, getCosSinMap, lm2idx
 import numpy as np
-from vshHelpers import getNumCoefficients
+from pyVSH.vshHelpers import getNumCoefficients
 
 def getGlmFlm(maxl, a, d):
     """returns the line of gradients for a specific position on the sky"""

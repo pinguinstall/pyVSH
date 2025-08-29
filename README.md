@@ -11,6 +11,10 @@ issues for higher orders (l).
 We also included functionality to compute weighted and un-weighted powers from the fitted coefficients, rotation and glide, and some other parameters.
 
 ## installation
+```
+pip install git+<LINK_TO_GITLAB_REPO>
+```
+
 You can read `install.txt` for instructions to build a Cython version of this library.
 We begun to use numba ([https://numba.pydata.org/]) for some routines, it should be transparent for users who do not have numba installed.
 

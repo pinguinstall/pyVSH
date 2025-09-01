@@ -18,7 +18,7 @@ from pyVSH.computeVectorW import computeVectorW, computeVectorWOver, computeVect
 import sys
 
 
-def fitVSH(data: np.array, lmax: int, debug=False, store_all=False) -> tuple:
+def fitVSH(data: np.array, lmax: int, debug=False, store_all=False, store_LSQ=True) -> tuple:
     """
     fit vector spherical harmonics up to order lmax to the input data.
     the data must be a matrix with the following columns
@@ -69,8 +69,14 @@ def fitVSH(data: np.array, lmax: int, debug=False, store_all=False) -> tuple:
     # solve the system
     N = np.matmul(np.transpose(AW), AW)
     rhs = np.matmul(np.transpose(AW), bW)
-    res['AtA'] = N
-    res['Atb'] = rhs
+    
+    del AW
+    del bW
+    
+    if store_LSQ:
+        res['AtA'] = N
+        res['Atb'] = rhs
+        
     c = np.linalg.solve(N, rhs)
     res['solution'] = c
 
@@ -85,7 +91,10 @@ def fitVSH(data: np.array, lmax: int, debug=False, store_all=False) -> tuple:
     # correlations
     invN = np.linalg.inv(N)
     corrs = computeCorrelations(invN)
-    res['allCorrs'] = corrs.astype(np.half)
+    
+    if store_LSQ:
+        res['allCorrs'] = corrs.astype(np.half)
+        
     res['maxCorr'] = np.max(np.triu(corrs, 1))
     res['minCorr'] = np.min(np.triu(corrs, 1))
     del corrs
@@ -114,29 +123,35 @@ def fitVSH(data: np.array, lmax: int, debug=False, store_all=False) -> tuple:
     else:
         res['glide'] = 'lmax == 0'
 
-    # RMS and Powers
+    # Powers
     PlT = computeVectorP(lmax, c[:num_coeffs_half])
     PlS = computeVectorP(lmax, c[num_coeffs_half:])
-    NlT = computeVectorP(lmax, sigmas[:num_coeffs_half]) / ( 2 * np.array(range(1, lmax+1)) + 1)
-    NlS = computeVectorP(lmax, sigmas[num_coeffs_half:]) / ( 2 * np.array(range(1, lmax+1)) + 1)
+    NlT = computeVectorP(lmax, sigmas[:num_coeffs_half])
+    NlS = computeVectorP(lmax, sigmas[num_coeffs_half:])
     
     res['PlT'] = PlT.copy()
     res['PlS'] = PlS.copy()
     
+    res['NlT'] = NlT.copy()
+    res['NlS'] = NlS.copy()
+    
+    res['PhatlT'] = PlT - NlT
+    res['PhatlS'] = PlS - NlS
+    
     res['ClT'] = PlT / ( 2 * np.array(range(1, lmax+1)) + 1)
     res['ClS'] = PlS / ( 2 * np.array(range(1, lmax+1)) + 1)
     
-    res['ChatlT'] = res['ClT'] - NlT
-    res['ChatlS'] = res['ClS'] - NlS
-
-    RMSAll = np.sqrt((PlT + PlS) / (4 * np.pi))
-    PlT = np.sqrt(PlT / (4 * np.pi))
-    PlS = np.sqrt(PlS / (4 * np.pi))
-
-    res['RMSVSH'] = np.transpose(np.array([PlT, PlS, RMSAll]))
-    res['RMSData'] = np.sqrt(np.dot(b, b) / (2 * M))
-    res['RMSResult'] = np.sqrt(s02 * (2 * M - num_coeffs) / (2 * M))
-
+    res['ChatlT'] = res['ClT'] - NlT / ( 2 * np.array(range(1, lmax+1)) + 1)
+    res['ChatlS'] = res['ClS'] - NlS / ( 2 * np.array(range(1, lmax+1)) + 1)
+    
+    res['RMSData_raw'] = np.sqrt(np.dot(b, b) / (2 * M))
+    res['PV_data'] = np.sum(data[:, 2]**2 + data[:, 4]**2) / M
+    res['PV_VSH'] = np.sum(PlT + PlS) / M
+    res['PV_VSH_debiased'] = np.sum(res['PhatlT'] + res['PhatlS']) / M
+    
+    res['PV_VSH_lsum'] = [np.sum(PlT[:lll] + PlS[:lll]) / M for lll in range(1,lmax+1)]
+    res['PV_VSH_debiased_lsum'] = [np.sum(res['PhatlT'][:lll] + res['PhatlS'][:lll]) / M for lll in range(1,lmax+1)]
+    
     # normalized powers
     res['WlT'] = computeVectorW(lmax, c[:num_coeffs_half], sigmas[:num_coeffs_half])
     res['WlS'] = computeVectorW(lmax, c[num_coeffs_half:], sigmas[num_coeffs_half:])

@@ -31,7 +31,7 @@ Make sure this data is in a numpy array, and you just need to call `fitVSH.fitVS
 Here is a short example for random data:
 ```python
 import numpy as np
-import fitVSH
+from pyVSH import fitVSH
 n_points = 3000
 
 # generate randomly distributed points on the sphere
@@ -53,6 +53,7 @@ mydata = np.array([alphas, deltas, dalpha, sigmaalpha, ddelta, sigmadelta]).T
 # fit VSH up to order lmax
 lmax = 5
 result = fitVSH.fitVSH(mydata, lmax=lmax)
+print(result)
 ```
 
 The result is a dictionary with the usual statistics and fit parameters.

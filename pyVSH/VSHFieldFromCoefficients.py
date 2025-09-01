@@ -1,6 +1,6 @@
-import getVSHDerivatives as vshd
-from celestCoordinates import getUHValpha, getUHVdelta, vec2ad, vec2adVectorized
-from vshHelpers import getLmaxFromNumCo
+import pyVSH.getVSHDerivatives as vshd
+from pyVSH.celestCoordinates import getUHValpha, getUHVdelta, vec2ad, vec2adVectorized
+from pyVSH.vshHelpers import getLmaxFromNumCo
 import healpy as hp
 import numpy as np
 import matplotlib.pyplot as plt

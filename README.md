@@ -11,6 +11,10 @@ issues for higher orders (l).
 We also included functionality to compute weighted and un-weighted powers from the fitted coefficients, rotation and glide, and some other parameters.
 
 ## installation
+```
+pip install git+https://gitlab.mn.tu-dresden.de/gaia/pyvsh
+```
+
 You can read `install.txt` for instructions to build a Cython version of this library.
 We begun to use numba ([https://numba.pydata.org/]) for some routines, it should be transparent for users who do not have numba installed.
 
@@ -27,7 +31,7 @@ Make sure this data is in a numpy array, and you just need to call `fitVSH.fitVS
 Here is a short example for random data:
 ```python
 import numpy as np
-import fitVSH
+from pyVSH import fitVSH
 n_points = 3000
 
 # generate randomly distributed points on the sphere
@@ -49,6 +53,7 @@ mydata = np.array([alphas, deltas, dalpha, sigmaalpha, ddelta, sigmadelta]).T
 # fit VSH up to order lmax
 lmax = 5
 result = fitVSH.fitVSH(mydata, lmax=lmax)
+print(result)
 ```
 
 The result is a dictionary with the usual statistics and fit parameters.

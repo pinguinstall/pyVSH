@@ -42,8 +42,9 @@ def getVSHVectors(alpha, delta, lmax):
     G = np.array(G)
     F = np.array(F)
     
-    P = np.array([F, G]).flatten()
-    Q = np.array([-G, F]).flatten()
-    # P = for e alpha
-    # Q = for e delta
-    return np.transpose(np.array([P, Q]))
+    A = np.array([F, G]).flatten()
+    D = np.array([-G, F]).flatten()
+    # A = for e_alpha
+    # D = for e_delta
+
+    return np.transpose(np.array([A, D]))

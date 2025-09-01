@@ -127,7 +127,7 @@ def getAB(x, lmax):
 
     return [A, B]
 
-@njit
+
 def computeAssociatedLegendre(x, lmax):
     sx = sqrt(1 - x**2)
     P = np.zeros((lmax+1, lmax+1))

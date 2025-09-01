@@ -1,5 +1,5 @@
 setuptools~=67.6.1
 Cython~=0.29.35
-numpy~=1.21.5
+numpy>=1.21.5, <2.0.0
 healpy~=1.16.2
-matplotlib~=3.5.1
+matplotlib>=3.5.1

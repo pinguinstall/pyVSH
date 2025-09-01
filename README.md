@@ -32,6 +32,9 @@ Here is a short example for random data:
 ```python
 import numpy as np
 from pyVSH import fitVSH
+
+from pyVSH import fitVSH, VSHFieldFromCoefficients
+
 n_points = 3000
 
 # generate randomly distributed points on the sphere
@@ -53,7 +56,10 @@ mydata = np.array([alphas, deltas, dalpha, sigmaalpha, ddelta, sigmadelta]).T
 # fit VSH up to order lmax
 lmax = 5
 result = fitVSH.fitVSH(mydata, lmax=lmax)
+
 print(result)
+VSHFieldFromCoefficients.plotAlphaDeltaForCoffSet(result["solution"])
+
 ```
 
 The result is a dictionary with the usual statistics and fit parameters.
